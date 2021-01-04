@@ -213,4 +213,5 @@ It turns out that there exist many boards that don't score any points at all. Ex
 
 ### Path plots
 The *--display fancy* option generates these fancy command-line plots to help find the word paths.
-![](https://i.imgur.com/j8FlCEV_d.webp)
+
+![Path plot](https://i.imgur.com/j8FlCEV_d.webp)
