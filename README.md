@@ -19,7 +19,7 @@ We further utilize the stack by retrieving the next character for our search eac
 
 Note that it is disallowed to use the same die twice in one sequence. After the first character, we can thus explore at most 7 options every step. Logically, the overall state space will grow exponentially for bigger grids and larger sequence lengths. We therefore have to implement some way of pruning in order to run the program efficiently.
 
-Luckily, our word list contains many inflections. We can thus heavily prune our search by saving all possible word truncations (up to the full words themselves), stopping our search as soon as we don't match any of these truncations. Example: *aalfuik* and *aaltje* truncate the same up to *aal*. Similarly, *lopend* and *lopende* truncate the same up to *lopend*. As many inflections and similar words contain similar subsets of letters, the memory overhead of this approach will likely not be large.
+Luckily, our word list contains many inflections. We can thus heavily prune our search by saving all possible word truncations (up to the full words themselves), stopping our search as soon as we don't match any of these truncations. Example: *aalfuik* and *aaltje* truncate the same up to *aal*. Similarly, *lopend* and *lopende* truncate the same up to *lopend*. For completeness, the word *aaltje* itself will truncate to *{a, aa, aal, aalt, aaltj, aaltje}*. As many inflections and similar words contain similar subsets of letters, the memory overhead of this approach will likely not be large.
 
 ### Pseudocode
 ```python
@@ -52,11 +52,11 @@ while not options_stack.empty():
 		cur_path.append(None)
 ```
 ### Complexity analysis
-The actual implementation keeps a character list at every step and thus constructing a word takes $O(1)$ steps instead of $O(n)$. For all steps of the pathfinding:
-* Retrieving next cell (stack peek / pop): $O(1)$
-* Constructing current word (using current character list): $O(1)$
-* Current word lookup (using Python dictionary): $O(1)$
-* Retrieving valid neighbors (always <= 8 options): $O(1)$
+The actual implementation keeps a character list at every step and thus constructing a word takes *O(1)* steps instead of *O(n)*. For all steps of the pathfinding:
+* Retrieving next cell (stack peek / pop): *O(1)*
+* Constructing current word (using current character list): *O(1)*
+* Current word lookup (using Python dictionary): *O(1)*
+* Retrieving valid neighbors (always <= 8 options): *O(1)*
 
 Even though the individual steps are efficient, the number of iterations the program needs to run for is bounded by the size of the state space. We calculate this exactly in the results. Using the truncation pruning method, the number of steps is now further bounded by the size and complexity of the words inside the word list instead.
 
@@ -65,7 +65,7 @@ Finally we will attempt to find the highest and lowest scoring boards using a gr
 To perform the search, we make use of one board mutation: we randomly change the face of one of the dice and then swap this modified die with a random, different die on the board. We then calculate the board score. If the current board score is larger than the best board score so far, we save the current board instead. As the search space is non-convex, this algorithm will not guarantee a global optimum.
 
 ## Results
-The total number of entries in our filtered word list is 308991. Assuming that every truncation is unique, the truncation dictionary should contain $n+1 \choose 2$ entries per word of length $n$. The truncation dictionary should then contain 21004363 entries. As the words overlap in many cases (and therefore many truncations are not unique), the truncation dictionary in practice only contains a total of 978676 entries! I found it consumes about 0.1GB of RAM on my machine, so it is viable on the modern day computer.
+The total number of entries in our filtered word list is 308991. Assuming that every truncation is unique, the truncation dictionary should contain *n+1 choose 2* entries per word of length *n*. The truncation dictionary should then contain 21004363 entries. As the words overlap in many cases (and therefore many truncations are not unique), the truncation dictionary in practice only contains a total of 978676 entries! I found it consumes about 0.1GB of RAM on my machine, so it is viable on the modern day computer.
 
 ### Sample runs
 #### Random board, default settings
